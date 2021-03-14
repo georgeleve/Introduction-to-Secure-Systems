@@ -12,10 +12,12 @@
 //uint8_t* is a pointer to an 8 bit integer in ram
 /* The ^ (bitwise XOR) in C or C++ takes two numbers as operands and does XOR on every bit of two numbers. The result of XOR is 1 if the two bits are different. */
 
+
 /* One-Time Pad (OTP) */
 uint8_t *otp_encrypt(uint8_t *plaintext, uint8_t *key){
-   uint8_t ciphertext[LENGTH];
-   assert(sizeof(key) >= sizeof(plaintext);
+   uint8_t *ciphertext;
+   int i;
+   assert(sizeof(key) >= sizeof(plaintext));
    printf("\nENCRYPT\n");
    for(i=0; i<LENGTH; ++i)
       ciphertext[i] = (char)(plaintext[i] ^ key[i]);
@@ -26,7 +28,8 @@ uint8_t *otp_encrypt(uint8_t *plaintext, uint8_t *key){
 }
 uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
    uint8_t *plaintext;
-   assert(sizeof(key) >= sizeof(ciphertext);
+   int i;
+   assert(sizeof(key) >= sizeof(ciphertext));
    printf("\n\nDECRYPT\nciphertext: ");
    for(i=0; i<LENGTH; ++i)
       printf("%02X ", ciphertext[i]);
@@ -73,7 +76,7 @@ uint8_t *affine_encrypt(uint8_t *plaintext){
    int b = 19;
    int m = 26;
    int f;
-   f = a*x + b%m;
+   //f = a*x + b%m;
    return ciphertext;
 }
 uint8_t *affine_decrypt(uint8_t *ciphertext){
@@ -82,21 +85,22 @@ uint8_t *affine_decrypt(uint8_t *ciphertext){
    int b = 19;
    int m = 26;
    int D;
-   D = a^-1 * (x - b) % m;
+   //D = a^-1 * (x - b) % m;
    return plaintext;
 }
 
+
 /* Feistel cipher */
-uint8_t *round(uint8_t* block, uint8_t *key){
+uint8_t *feistel_round(uint8_t* block, uint8_t *key){
    uint8_t *result;
    //R[];
    //K[];
-   F = (R[i] * K[i])%(2^32);
+   //F = (R[i] * K[i])%(2^32);
    return result; // returns one output the same size as the data block
 }
 uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]){
    uint8_t *ciphertext;
-   int R, L;
+   int R, L, i;
    int S = 64; // block size of 64 bits
    int n_rounds = 8;
    for(i = 0; i < n_rounds; i++){
@@ -106,7 +110,7 @@ uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]){
 }
 uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
    uint8_t *plaintext;
-   int R, L;
+   int R, L, i;
    int S = 64;
    int n_rounds = 8;
    for(i = 0; i < n_rounds; i++){
@@ -122,29 +126,29 @@ int main(void) {
    uint8_t ciphertext[LENGTH];
 
    /* One-Time Pad (OTP) */
-   ciphertext = uint8_t *otp_encrypt(plaintext, key);
-   uint8_t *otp_decrypt(ciphertext, key);
+   //ciphertext = otp_encrypt(plaintext, key);
+   otp_decrypt(ciphertext, key);
 
    /* Caesar’s cipher
-   uint8_t *caesar_encrypt(plaintext, 3);
-   uint8_t *caesar_decrypt(ciphertext, 3);
+   caesar_encrypt(plaintext, 3);
+   caesar_decrypt(ciphertext, 3);
    */
 
    /* Playfair cipher
-   unsigned char *playfair_encrypt(plaintext, key);
-   unsigned char *playfair_decrypt(ciphertext, key);
-   unsigned char **playfair_keymatrix(key);
+   playfair_encrypt(plaintext, key);
+   playfair_decrypt(ciphertext, key);
+   playfair_keymatrix(key);
    */
 
    /* Affine cipher 
-   uint8_t *affine_encrypt(plaintext);
-   uint8_t *affine_decrypt(ciphertext);
+   affine_encrypt(plaintext);
+   affine_decrypt(ciphertext);
    */
 
    /* Feistel cipher
-   uint8_t* round(block, key);
-   uint8_t* feistel_encrypt(plaintext, keys[]);
-   uint8_t* feistel_decrypt(ciphertext, keys[]);
+   feistel_round(block, key);
+   feistel_encrypt(plaintext, keys[]);
+   feistel_decrypt(ciphertext, keys[]);
    */
 
    return 0;

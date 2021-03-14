@@ -1,24 +1,18 @@
 #include <stdint.h>
 #include <inttypes.h>
-#include <stdio.h>
 #include <stdlib.h> 
-#include <string.h>
-#include <sys/socket.h>
 #include <stdio.h>
 #include <string.h>
 #include <memory.h>
-#include <stdlib.h>
-#include <sys/types.h>
 #include <assert.h>
 #include <unistd.h>
 #include <stddef.h>
-#include <stdint.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
 
 #define LENGTH 11
-
 
 /* One-Time Pad (OTP) */
 uint8_t *otp_encrypt(uint8_t *plaintext, uint8_t *key);
@@ -39,6 +33,6 @@ uint8_t *affine_encrypt(uint8_t *plaintext);
 uint8_t *affine_decrypt(uint8_t *ciphertext);
 
 /* Feistel cipher */
-uint8_t *round(uint8_t *block, uint8_t *key);
+uint8_t *feistel_round(uint8_t *block, uint8_t *key);
 uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]);
 uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]);
