@@ -42,12 +42,67 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
 
 /*  Caesar’s cipher  - to N einai posa grammata thelo na kano shift */
 uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
-   uint8_t *ciphertext;
-   return ciphertext;
-}
-uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
-   uint8_t *plaintext;
+   char ch;
+   int i;
+   N = N % 26; /* N must be between 1-26 */ 
+
+	for(i = 0; plaintext[i] != '\0'; ++i){
+		ch = plaintext[i];
+
+		if(ch >= 'a' && ch <= 'z'){
+			ch = ch + N;
+			if(ch > 'z') ch = ch - 'z' + 'a' - 1;
+			plaintext[i] = ch;
+		}
+      
+      if(ch >= '0' && ch <= '9'){
+			ch = ch + N;
+			if(ch > '9') ch = ch - '9' + '0' - 1;
+			plaintext[i] = ch;
+		}
+
+		if(ch >= 'A' && ch <= 'Z'){
+			ch = ch + N;
+			if(ch > 'Z') ch = ch - 'Z' + 'A' - 1;
+			plaintext[i] = ch;
+		}
+	}
+   plaintext[i] = '\0';  
    return plaintext;
+   // edo to kanoniko plaintext xalaei epeidh to pernao by reference all den me peirazei afou 
+   // den to xanaxrhsimopoio kapou
+}
+
+uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
+   char ch;
+   int i;
+   N = N % 26; /* N must be between 1-26 */ 
+
+	for(i = 0; ciphertext[i] != '\0'; ++i){
+		ch = ciphertext[i];
+
+		if(ch >= 'a' && ch <= 'z'){
+			ch = ch + N;
+			if(ch > 'z') ch = ch - 'z' + 'a' - 1;
+			ciphertext[i] = ch;
+		}
+      
+      if(ch >= '0' && ch <= '9'){
+			ch = ch + N;
+			if(ch > '9') ch = ch - '9' + '0' - 1;
+			ciphertext[i] = ch;
+		}
+
+		if(ch >= 'A' && ch <= 'Z'){
+			ch = ch + N;
+			if(ch > 'Z') ch = ch - 'Z' + 'A' - 1;
+			ciphertext[i] = ch;
+		}
+	}
+   ciphertext[i] = '\0';  
+   return ciphertext;
+   // edo to kanoniko ciphertext xalaei epeidh to pernao by reference all den me peirazei afou 
+   //den to xanaxrhsimopoio kapou
 }
 
 
@@ -118,28 +173,59 @@ uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
    return plaintext;
 }
 
+void checkPlaintext(){
+
+}
 
 int main(void) {
-   uint8_t plaintext[LENGTH] = "HelloWorld";
-   uint8_t key[LENGTH] = "randombyte";
-   uint8_t ciphertext[LENGTH] = "";
-   FILE *fp;
+   //uint8_t plaintext[LENGTH] = "HelloWorld";
+   //uint8_t key[LENGTH] = "randombyte";
+   //uint8_t ciphertext[LENGTH] = "";
+   uint8_t *plaintext;
+   uint8_t *ciphertext;
+   uint8_t *temp;
+   int c;
+   ushort N = 4;
 
-   /* Open file to read the plaintext */   
-   fp = fopen("test.txt", "a+");
-   //fprintf(fp, "This is testing for fprintf...\n");
-   //fputs("This is testing for fputs...\n", fp);
-   fclose(fp);
+   /* Read input.txt character by character */
+   FILE *file = fopen("input.txt", "r");
+   size_t i = 0;
 
-   /* One-Time Pad (OTP) */
+   if(file == NULL) perror("Could not open file\n");
+
+   // calculate the size of the file
+   fseek(file, 0, SEEK_END);
+   long f_size = ftell(file);
+   fseek(file, 0, SEEK_SET);
+
+   plaintext = malloc(f_size);
+   ciphertext = malloc(f_size);
+
+   /* read from file and initialize the plaintext */
+   while ((c = fgetc(file)) != EOF)
+      plaintext[i++] = (char)c;
+   plaintext[i] = '\0';     
+
+   printf("ENCRYPT:\n\n");
+   printf("plaintext: %s\n\nN = %d\n\n", plaintext, N);
+   printf("---------------------------------------\n\n");
+
+   /* One-Time Pad (OTP) 
    otp_encrypt(plaintext, key); // apo edo prepei na krathso kapos to ciphertext
    otp_decrypt(ciphertext, key); // giati edo dino oti nanai 
-
-   printf("hello world"); // auto den tiponetai gt
-   /* Caesar’s cipher
-   caesar_encrypt(plaintext, 3);
-   caesar_decrypt(ciphertext, 3);
    */
+
+   /* Caesar’s cipher */
+   ciphertext = caesar_encrypt(plaintext, N);
+   printf("ciphertext: %s\n", ciphertext);
+   
+
+   printf("\n\nDECRYPT:\n\n");
+   
+   printf("ciphertext: %s\n\nN = %d\n\n", plaintext, N);
+   printf("---------------------------------------\n\n");
+   plaintext = caesar_decrypt(ciphertext, N);
+   printf("plaintext: %s\n", plaintext);
 
    /* Playfair cipher
    playfair_encrypt(plaintext, key);
