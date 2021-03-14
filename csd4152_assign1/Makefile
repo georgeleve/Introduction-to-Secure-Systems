@@ -12,7 +12,7 @@ clean:
 #otp:
 
 caesars:
-	gcc -o exe cs457_crypto.c
+	gcc -o a.out cs457_crypto.c
 	./a.out
 
 #playfair:
