@@ -16,7 +16,7 @@ uint8_t *otp_encrypt(uint8_t *plaintext, uint8_t *key){
    uint8_t *ciphertext;
    int i;
    assert(sizeof(key) >= sizeof(plaintext));
-   printf("\nENCRYPT\n");
+   
    for(i=0; i<LENGTH; ++i)
       ciphertext[i] = (char)(plaintext[i] ^ key[i]);
    printf("plaintext: %s\nXOR\nkey: %s\n=\nciphertext: ", plaintext, key);
@@ -40,7 +40,6 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
 }
 
 
-/*  Caesar’s cipher  - to N einai posa grammata thelo na kano shift */
 uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
    char ch;
    int i;
@@ -69,8 +68,8 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
 	}
    plaintext[i] = '\0';  
    return plaintext;
-   // edo to kanoniko plaintext xalaei epeidh to pernao by reference all den me peirazei afou 
-   // den to xanaxrhsimopoio kapou
+   /* edo to kanoniko plaintext xalaei epeidh to pernao by reference
+      alla den me peirazei afou den to xanaxrhsimopoio kapou */
 }
 uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
    char ch;
@@ -100,12 +99,12 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
 	}
    ciphertext[i] = '\0';  
    return ciphertext;
-   // edo to kanoniko ciphertext xalaei epeidh to pernao by reference all den me peirazei afou 
-   //den to xanaxrhsimopoio kapou
+   /* edo to kanoniko ciphertext xalaei epeidh to pernao by reference
+      alla den me peirazei afou den to xanaxrhsimopoio kapou */
 }
 
 
-/* Playfair cipher */   
+
 unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char** key){
    unsigned char *ciphertext;
    // do stuff
@@ -118,11 +117,12 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char** key){
 }
 unsigned char **playfair_keymatrix(unsigned char *key){
    unsigned char **result;
+   // do something
    return result;
 }
 
 
-// Affine cipher    ^ (bitwise XOR)    only UPPERCASE
+/* Affine cipher    ^ (bitwise XOR)    only UPPERCASE */
 uint8_t *affine_encrypt(uint8_t *plaintext){
    uint8_t *ciphertext;
    int a = 11;
@@ -172,19 +172,21 @@ uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
    return plaintext;
 }
 
-void checkPlaintext(){
-   
-}
 
 void onetimepad_cipher(){
+   printf("---------------------------------------\nOne Time Pad Cipher");
+   printf("\n---------------------------------------\n\n\n");
    //uint8_t plaintext[LENGTH] = "HelloWorld";
    //uint8_t key[LENGTH] = "randombyte";
    //uint8_t ciphertext[LENGTH] = "";
    uint8_t *plaintext;
    uint8_t *ciphertext;
    uint8_t *key;
-
+   
+   printf("\nENCRYPT\n");
    otp_encrypt(plaintext, key); // apo edo prepei na krathso kapos to ciphertext
+   
+   printf("\nDECRYPT\n");
    otp_decrypt(ciphertext, key); // giati edo dino oti nanai 
 }
 
@@ -232,31 +234,53 @@ void ceasars_cipher(){
 }
 
 void playfair_cipher(){
+   printf("---------------------------------------\nPlayfair Cipher");
+   printf("\n---------------------------------------\n\n\n");
    unsigned char *plaintext;
    unsigned char *ciphertext;
    unsigned char **key;
    unsigned char *second_key;
+
+   printf("\nENCRYPT\n");
    playfair_encrypt(plaintext, key);
+
+   printf("\nDECRYPT\n");
    playfair_decrypt(ciphertext, key);
    playfair_keymatrix(second_key);
 }
 
 void affine_cipher(){
+   printf("---------------------------------------\nAffine Cipher");
+   printf("\n---------------------------------------\n\n\n");
    uint8_t *plaintext;
    uint8_t *ciphertext;
+
+   printf("\nENCRYPT\n");
    affine_encrypt(plaintext);
+
+   printf("\nDECRYPT\n");
    affine_decrypt(ciphertext);
 }
 
 void feistel_cipher(){
+   printf("---------------------------------------\nFeistel Cipher");
+   printf("\n---------------------------------------\n\n\n");
    uint8_t *plaintext;
    uint8_t *ciphertext;
    uint8_t keys[8];
    uint8_t* block;
    uint8_t *key;
    feistel_round(block, key);
+
+   printf("\nENCRYPT\n");
    feistel_encrypt(plaintext, keys);
+
+   printf("\nDECRYPT\n");
    feistel_decrypt(ciphertext, keys);
+}
+
+void checkPlaintext(){
+   
 }
 
 int main(int argc, char *argv[]) {
