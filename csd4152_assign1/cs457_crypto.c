@@ -5,9 +5,7 @@
  isos iparxei proforikh exetash  isos na xrhsimopoihso thn toupper()  me to #include <ctype.h>*/
 //  Na xrhsimopoihso thn  /dev/urandom  gia na kano generate random kleidia
 
-//uint8_t = a type of unsigned integer of length 8 bits
-
-//uint8_t is an unsigned 8 bit integer
+//uint8_t is an unsigned 8 bit integer (a type of unsigned integer of length 8 bits)
 
 //uint8_t* is a pointer to an 8 bit integer in ram
 /* The ^ (bitwise XOR) in C or C++ takes two numbers as operands and does XOR on every bit of two numbers. The result of XOR is 1 if the two bits are different. */
@@ -36,7 +34,8 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
    printf("\nXOR\nkey: %s\n=\nplaintext: ", key);
    for(i=0; i<LENGTH; ++i)
       plaintext[i] = (char)(ciphertext[i] ^ key[i]);
-   printf("%s\n", plaintext);
+   
+   printf("%s\n", plaintext);  // kapou edo troo segmentation
    return plaintext;
 }
 
@@ -123,12 +122,20 @@ uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
 int main(void) {
    uint8_t plaintext[LENGTH] = "HelloWorld";
    uint8_t key[LENGTH] = "randombyte";
-   uint8_t ciphertext[LENGTH];
+   uint8_t ciphertext[LENGTH] = "";
+   FILE *fp;
+
+   /* Open file to read the plaintext */   
+   fp = fopen("test.txt", "a+");
+   //fprintf(fp, "This is testing for fprintf...\n");
+   //fputs("This is testing for fputs...\n", fp);
+   fclose(fp);
 
    /* One-Time Pad (OTP) */
-   //ciphertext = otp_encrypt(plaintext, key);
-   otp_decrypt(ciphertext, key);
+   otp_encrypt(plaintext, key); // apo edo prepei na krathso kapos to ciphertext
+   otp_decrypt(ciphertext, key); // giati edo dino oti nanai 
 
+   printf("hello world"); // auto den tiponetai gt
    /* Caesar’s cipher
    caesar_encrypt(plaintext, 3);
    caesar_decrypt(ciphertext, 3);
