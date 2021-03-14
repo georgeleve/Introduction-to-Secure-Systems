@@ -103,47 +103,6 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
    // edo to kanoniko ciphertext xalaei epeidh to pernao by reference all den me peirazei afou 
    //den to xanaxrhsimopoio kapou
 }
-void ceasars_cipher(){
-   uint8_t *plaintext;
-   uint8_t *ciphertext;
-   uint8_t *temp;
-   int c;
-   ushort N = 4;
-
-   /* Read input.txt character by character */
-   FILE *file = fopen("input.txt", "r");
-   size_t i = 0;
-
-   if(file == NULL) perror("Could not open file\n");
-
-   // calculate the size of the file
-   fseek(file, 0, SEEK_END);
-   long f_size = ftell(file);
-   fseek(file, 0, SEEK_SET);
-
-   plaintext = malloc(f_size);
-   ciphertext = malloc(f_size);
-   temp = malloc(f_size);
-
-   /* read from file and initialize the plaintext */
-   while ((c = fgetc(file)) != EOF)
-      plaintext[i++] = (char)c;
-   plaintext[i] = '\0';     
-
-   printf("---------------------------------------\nENCRYPT:\n\n");
-   printf("plaintext: %s\n\nN = %d\n\n", plaintext, N);
-
-   ciphertext = caesar_encrypt(plaintext, N);
-   printf("ciphertext: %s\n", ciphertext);
-   printf("---------------------------------------\n\n");
-
-   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
-   
-   printf("ciphertext: %s\n\nN = %d\n\n", plaintext, N);
-   caesar_decrypt(ciphertext, N);
-   printf("plaintext: %s\n", ciphertext);
-   printf("---------------------------------------\n\n");
-}
 
 
 /* Playfair cipher */   
@@ -217,34 +176,101 @@ void checkPlaintext(){
    
 }
 
-int main(int argc, char *argv[]) {
+
+void onetimepad_cipher(){
    //uint8_t plaintext[LENGTH] = "HelloWorld";
    //uint8_t key[LENGTH] = "randombyte";
    //uint8_t ciphertext[LENGTH] = "";
+   uint8_t *plaintext;
+   uint8_t *ciphertext;
+   uint8_t *key;
 
-   /* One-Time Pad (OTP) 
    otp_encrypt(plaintext, key); // apo edo prepei na krathso kapos to ciphertext
    otp_decrypt(ciphertext, key); // giati edo dino oti nanai 
-   */
+}
+
+void ceasars_cipher(){
+   uint8_t *plaintext;
+   uint8_t *ciphertext;
+   ushort N = 4;
+   int c;
+
+   printf("---------------------------------------\nCeasar's Cipher");
+   printf("\n---------------------------------------\n\n\n");
+
+   /* Read input.txt character by character */
+   FILE *file = fopen("input.txt", "r");
+   size_t i = 0;
+
+   if(file == NULL) perror("Could not open file\n");
+
+   // calculate the size of the file
+   fseek(file, 0, SEEK_END);
+   long f_size = ftell(file);
+   fseek(file, 0, SEEK_SET);
+
+   plaintext = malloc(f_size);
+   ciphertext = malloc(f_size);
+
+   /* read from file and initialize the plaintext */
+   while ((c = fgetc(file)) != EOF)
+      plaintext[i++] = (char)c;
+   plaintext[i] = '\0';     
+
+   printf("---------------------------------------\nENCRYPT:\n\n");
+   printf("plaintext: %s\n\nN = %d\n\n", plaintext, N);
+
+   ciphertext = caesar_encrypt(plaintext, N);
+   printf("ciphertext: %s\n", ciphertext);
+   printf("---------------------------------------\n");
+
+   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   
+   printf("ciphertext: %s\n\nN = %d\n\n", plaintext, N);
+   caesar_decrypt(ciphertext, N);
+   printf("plaintext: %s\n", ciphertext);
+   printf("---------------------------------------\n\n");
+}
+
+void playfair_cipher(){
+   unsigned char *plaintext;
+   unsigned char *ciphertext;
+   unsigned char **key;
+   unsigned char *second_key;
+   playfair_encrypt(plaintext, key);
+   playfair_decrypt(ciphertext, key);
+   playfair_keymatrix(second_key);
+}
+
+void affine_cipher(){
+   uint8_t *plaintext;
+   uint8_t *ciphertext;
+   affine_encrypt(plaintext);
+   affine_decrypt(ciphertext);
+}
+
+void feistel_cipher(){
+   uint8_t *plaintext;
+   uint8_t *ciphertext;
+   uint8_t keys[8];
+   uint8_t* block;
+   uint8_t *key;
+   feistel_round(block, key);
+   feistel_encrypt(plaintext, keys);
+   feistel_decrypt(ciphertext, keys);
+}
+
+int main(int argc, char *argv[]) {
+
+   //onetimepad_cipher();
 
    ceasars_cipher();
 
-   /* Playfair cipher
-   playfair_encrypt(plaintext, key);
-   playfair_decrypt(ciphertext, key);
-   playfair_keymatrix(key);
-   */
+   //playfair_cipher();
 
-   /* Affine cipher 
-   affine_encrypt(plaintext);
-   affine_decrypt(ciphertext);
-   */
+   //affine_cipher(); 
 
-   /* Feistel cipher
-   feistel_round(block, key);
-   feistel_encrypt(plaintext, keys[]);
-   feistel_decrypt(ciphertext, keys[]);
-   */
+   //feistel_cipher();
 
    return 0;
 }
