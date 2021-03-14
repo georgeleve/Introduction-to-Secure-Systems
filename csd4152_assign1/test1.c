@@ -95,7 +95,6 @@ int main() {
 	printf("Encrypted message(ciphertext): %s\n", plaintext);
 
 
-
     /*
     for(i = 0; ciphertext[i] != '\0'; ++i){
 		ch = ciphertext[i];
