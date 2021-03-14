@@ -176,7 +176,6 @@ void checkPlaintext(){
    
 }
 
-
 void onetimepad_cipher(){
    //uint8_t plaintext[LENGTH] = "HelloWorld";
    //uint8_t key[LENGTH] = "randombyte";
@@ -204,7 +203,7 @@ void ceasars_cipher(){
 
    if(file == NULL) perror("Could not open file\n");
 
-   // calculate the size of the file
+   /* calculate the size of the file */
    fseek(file, 0, SEEK_END);
    long f_size = ftell(file);
    fseek(file, 0, SEEK_SET);
@@ -212,7 +211,7 @@ void ceasars_cipher(){
    plaintext = malloc(f_size);
    ciphertext = malloc(f_size);
 
-   /* read from file and initialize the plaintext */
+   /* Read from input.txt and initialize the plaintext */
    while ((c = fgetc(file)) != EOF)
       plaintext[i++] = (char)c;
    plaintext[i] = '\0';     
@@ -227,7 +226,7 @@ void ceasars_cipher(){
    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
    
    printf("ciphertext: %s\n\nN = %d\n\n", plaintext, N);
-   caesar_decrypt(ciphertext, N);
+   caesar_decrypt(ciphertext, N); //call by reference - opote metatrepo to ciphertext se plaintext
    printf("plaintext: %s\n", ciphertext);
    printf("---------------------------------------\n\n");
 }
