@@ -43,6 +43,8 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
 uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
    char ch;
    int i;
+   ushort N2;
+   N2 = N % 10;
    N = N % 26; /* N must be between 1-26 */ 
    
 	for(i = 0; plaintext[i] != '\0'; ++i){
@@ -55,7 +57,7 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
 		}
       
       if(ch >= '0' && ch <= '9'){
-			ch = ch + N;
+			ch = ch + N2;
 			if(ch > '9') ch = ch - '9' + '0' - 1;
 			plaintext[i] = ch;
 		}
@@ -104,7 +106,7 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
 }
 
 
-
+// can the plaintext be more than 25 characters?
 unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char** key){
    unsigned char *ciphertext;
    // do stuff
@@ -193,8 +195,9 @@ void onetimepad_cipher(){
 void ceasars_cipher(){
    uint8_t *plaintext;
    uint8_t *ciphertext;
-   ushort N = 4;
+   ushort N = 76;
    int c;
+   long fileLength;
 
    printf("---------------------------------------\nCeasar's Cipher");
    printf("\n---------------------------------------\n\n\n");
@@ -207,11 +210,11 @@ void ceasars_cipher(){
 
    /* calculate the size of the file */
    fseek(file, 0, SEEK_END);
-   long f_size = ftell(file);
+   fileLength = ftell(file);
    fseek(file, 0, SEEK_SET);
 
-   plaintext = malloc(f_size);
-   ciphertext = malloc(f_size);
+   plaintext = malloc(fileLength);
+   ciphertext = malloc(fileLength);
 
    /* Read from input.txt and initialize the plaintext */
    while ((c = fgetc(file)) != EOF)
