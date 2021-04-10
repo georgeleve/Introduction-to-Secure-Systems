@@ -1,7 +1,7 @@
 #include "cs457_crypto.h"
 
 /* Na ftiaxoume dika mas test file , eite apo arxeio na diabazei eite apo consola (kalytera na diabazei apo arxeio to plaintext) 
-/* To input einai mono xarakthres tou ascii 
+/* To input einai mono xarakthres tou ascii
  isos iparxei proforikh exetash  isos na xrhsimopoihso thn toupper()  me to #include <ctype.h>*/
 //  Na xrhsimopoihso thn  /dev/urandom  gia na kano generate random kleidia
 
@@ -10,33 +10,18 @@
 //uint8_t* is a pointer to an 8 bit integer in ram
 /* The ^ (bitwise XOR) in C or C++ takes two numbers as operands and does XOR on every bit of two numbers. The result of XOR is 1 if the two bits are different. */
 
-
 /* One-Time Pad (OTP) */
 uint8_t *otp_encrypt(uint8_t *plaintext, uint8_t *key){
-   uint8_t *ciphertext;
    int i;
-   assert(sizeof(key) >= sizeof(plaintext));
-   
-   for(i=0; i<LENGTH; ++i)
-      ciphertext[i] = (char)(plaintext[i] ^ key[i]);
-   printf("plaintext: %s\nXOR\nkey: %s\n=\nciphertext: ", plaintext, key);
-   for(i=0; i<LENGTH; ++i)
-      printf("%02X ", ciphertext[i]);
-   return ciphertext;
+   assert(strlen(key) >= strlen(plaintext));
+   for(i = 0; i < strlen(key); ++i) plaintext[i] = (char)(plaintext[i] ^ key[i]);
+   return plaintext;
 }
 uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
-   uint8_t *plaintext;
    int i;
-   assert(sizeof(key) >= sizeof(ciphertext));
-   printf("\n\nDECRYPT\nciphertext: ");
-   for(i=0; i<LENGTH; ++i)
-      printf("%02X ", ciphertext[i]);
-   printf("\nXOR\nkey: %s\n=\nplaintext: ", key);
-   for(i=0; i<LENGTH; ++i)
-      plaintext[i] = (char)(ciphertext[i] ^ key[i]);
-   
-   printf("%s\n", plaintext);  // kapou edo troo segmentation
-   return plaintext;
+   assert(strlen(key) >= strlen(ciphertext));
+   for(i=0; i < strlen(key); ++i) ciphertext[i] = (char)(ciphertext[i] ^ key[i]);
+   return ciphertext;
 }
 
 
@@ -76,6 +61,8 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
 uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
    char ch;
    int i;
+   ushort N2;
+   N2 = N % 10;
    N = N % 26; /* N must be between 1-26 */ 
    
    for(i = 0; ciphertext[i] != '\0'; ++i){
@@ -88,7 +75,7 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
 		}
       
       if(ch >= '0' && ch <= '9'){
-			ch = ch - N;
+			ch = ch - N2;
 			if(ch < '0') ch = ch + '9' - '0' + 1;
 			ciphertext[i] = ch;
 		}
@@ -144,7 +131,6 @@ uint8_t *affine_decrypt(uint8_t *ciphertext){
    return plaintext;
 }
 
-
 /* Feistel cipher */
 uint8_t *feistel_round(uint8_t* block, uint8_t *key){
    uint8_t *result;
@@ -176,30 +162,58 @@ uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
 
 
 void onetimepad_cipher(){
-   printf("---------------------------------------\nOne Time Pad Cipher");
-   printf("\n---------------------------------------\n\n\n");
-   //uint8_t plaintext[LENGTH] = "HelloWorld";
-   //uint8_t key[LENGTH] = "randombyte";
-   //uint8_t ciphertext[LENGTH] = "";
-   uint8_t *plaintext;
-   uint8_t *ciphertext;
-   uint8_t *key;
+   printf("---------------------------------------\nOne Time Pad Cipher\n---------------------------------------\n\n\n");
+   long fileLength, secretKeySize;
+   uint8_t *plaintext, *ciphertext, *temp;
+   int c, fd;
+   size_t i = 0;
+
+   FILE *file = fopen("input.txt", "r");
+   if(file == NULL) perror("Could not open file\n");
+   fseek(file, 0, SEEK_END);
+   fileLength = ftell(file);
+   fseek(file, 0, SEEK_SET);
+   plaintext = malloc(fileLength);
+   ciphertext = malloc(fileLength);
+   while ((c = fgetc(file)) != EOF)
+      plaintext[i++] = (char)c;
+   plaintext[i] = '\0';     
+   secretKeySize = fileLength;
+
+   i = 0; 
+   uint8_t *secretKey = malloc(fileLength);
+   fd = open("/dev/urandom", O_RDONLY);
+   read(fd, secretKey, secretKeySize); // read random bytes
+   close(fd);
+
+   assert(strlen(secretKey) >= strlen(plaintext));   // sometimes the assertion fails        FIX THIS
+
+   printf("---------------------------------------\nENCRYPT:\n\n");
+   printf("plaintext = %s            size = %ld\n     ^\n", plaintext, strlen(plaintext));
+   printf("secret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("    size = %ld\n      =\n", secretKeySize);
    
-   printf("\nENCRYPT\n");
-   otp_encrypt(plaintext, key); // apo edo prepei na krathso kapos to ciphertext
+   ciphertext = otp_encrypt(plaintext, secretKey);
+ 
+   printf("ciphertext = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", ciphertext[i]);
+
+   printf("\n---------------------------------------\n");
+   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   printf("ciphertext = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", ciphertext[i]);
+   printf("\n       ^\nsecret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("    size = %ld\n      =\n", secretKeySize);
    
-   printf("\nDECRYPT\n");
-   otp_decrypt(ciphertext, key); // giati edo dino oti nanai 
+   temp = malloc(fileLength);
+   temp = otp_decrypt(ciphertext, secretKey);
+   printf("plaintext = %s            size = %ld\n", temp, strlen(temp));
 }
 
-void ceasars_cipher(){
+void caesars_cipher(){
    uint8_t *plaintext;
    uint8_t *ciphertext;
    ushort N = 76;
    int c;
    long fileLength;
 
-   printf("---------------------------------------\nCeasar's Cipher");
+   printf("---------------------------------------\nCaesar's Cipher");
    printf("\n---------------------------------------\n\n\n");
 
    /* Read input.txt character by character */
@@ -288,9 +302,9 @@ void checkPlaintext(){
 
 int main(int argc, char *argv[]) {
 
-   //onetimepad_cipher();
+   onetimepad_cipher();
 
-   ceasars_cipher();
+   //caesars_cipher();
 
    //playfair_cipher();
 

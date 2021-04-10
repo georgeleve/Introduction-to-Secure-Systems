@@ -5,11 +5,9 @@ all:
 	gcc -o a.out cs457_crypto.c
 	./a.out
 
-clean:
-	rm -rf *.o
-	rm -rf a.out
-
-#otp:
+otp:
+	gcc -o a.out cs457_crypto.c
+	./a.out
 
 caesars:
 	gcc -o a.out cs457_crypto.c
@@ -18,3 +16,9 @@ caesars:
 #playfair:
 
 #affine:
+
+#feistel:
+
+clean:
+	rm -rf *.o
+	rm -rf a.out
