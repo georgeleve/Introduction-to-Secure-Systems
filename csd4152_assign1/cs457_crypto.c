@@ -32,26 +32,28 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
    N2 = N % 10;
    N = N % 26; /* N must be between 1-26 */ 
    
+   //48-57  0-9
+   //65-90  A-Z
+   //97-122 a-z
 	for(i = 0; plaintext[i] != '\0'; ++i){
-		ch = plaintext[i];
-
-		if(ch >= 'a' && ch <= 'z'){
-			ch = ch + N;
-			if(ch > 'z') ch = ch - 'z' + 'a' - 1;
-			plaintext[i] = ch;
-		}
-      
+		ch = plaintext[i];    
       if(ch >= '0' && ch <= '9'){
 			ch = ch + N2;
 			if(ch > '9') ch = ch - '9' + '0' - 1;
 			plaintext[i] = ch;
 		}
-
-		if(ch >= 'A' && ch <= 'Z'){
+		else if(ch >= 'A' && ch <= 'Z'){
 			ch = ch + N;
 			if(ch > 'Z') ch = ch - 'Z' + 'A' - 1;
 			plaintext[i] = ch;
 		}
+		else if(ch >= 'a' && ch <= 'z'){
+			ch = ch + N;
+			//if(ch > 'z') ch = ch + ;
+			plaintext[i] = ch;
+		}else{
+         printf("Invalid character!\n");
+      }
 	}
    plaintext[i] = '\0';  
    return plaintext;
@@ -67,24 +69,23 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
    
    for(i = 0; ciphertext[i] != '\0'; ++i){
 		ch = ciphertext[i];
-
-		if(ch >= 'a' && ch <= 'z'){
-			ch = ch - N;
-			if(ch < 'a') ch = ch + 'z' - 'a' + 1;
-			ciphertext[i] = ch;
-		}
-      
       if(ch >= '0' && ch <= '9'){
 			ch = ch - N2;
 			if(ch < '0') ch = ch + '9' - '0' + 1;
-			ciphertext[i] = ch;
+			ciphertext[i] = 53;
 		}
-
-		if(ch >= 'A' && ch <= 'Z'){
+      else if(ch >= 'A' && ch <= 'Z'){
 			ch = ch - N;
 			if(ch < 'A') ch = ch + 'Z' - 'A' + 1;
 			ciphertext[i] = ch;
 		}
+		else if(ch >= 'a' && ch <= 'z'){
+			ch = ch - N;
+			if(ch < 'a') ch = ch + 'z' - 'a' + 1;
+			ciphertext[i] = ch;
+		}else{
+         printf("Invalid character!\n");
+      }
 	}
    ciphertext[i] = '\0';  
    return ciphertext;
@@ -113,21 +114,17 @@ unsigned char **playfair_keymatrix(unsigned char *key){
 
 /* Affine cipher    ^ (bitwise XOR)    only UPPERCASE */
 uint8_t *affine_encrypt(uint8_t *plaintext){
+   // “a” is a constant, “b”is the magnitude of the shift and “x” is the letter to encrypt
    uint8_t *ciphertext;
-   int a = 11;
-   int b = 19;
-   int m = 26;
-   int f;
-   //f = a*x + b%m;
+   int a = 11, b = 19, m = 26, f, x;
+   f = (a*x+b)%m;
    return ciphertext;
 }
 uint8_t *affine_decrypt(uint8_t *ciphertext){
+   // a^-1 is the modular multiplicative inverse of a mod m     The letter x denotes the encrypted letter
    uint8_t *plaintext;
-   int a = 11;
-   int b = 19;
-   int m = 26;
-   int D;
-   //D = a^-1 * (x - b) % m;
+   int a = 11, b = 19, m = 26, D, x;
+   D = a^-1 * (x - b) % m;
    return plaintext;
 }
 
@@ -175,18 +172,20 @@ void onetimepad_cipher(){
    fseek(file, 0, SEEK_SET);
    plaintext = malloc(fileLength);
    ciphertext = malloc(fileLength);
-   while ((c = fgetc(file)) != EOF)
-      plaintext[i++] = (char)c;
-   plaintext[i] = '\0';     
+  
+   while ((c = fgetc(file)) != EOF){
+      if((c>='0' && c<='9') || (c>='A' && c<='Z') || (c>='a' && c<='z')) plaintext[i++] = (char)c;
+   }
+   plaintext[i] = '\0';
    secretKeySize = fileLength;
 
    i = 0; 
    uint8_t *secretKey = malloc(fileLength);
    fd = open("/dev/urandom", O_RDONLY);
-   read(fd, secretKey, secretKeySize); // read random bytes
+   read(fd, secretKey, strlen(plaintext)); // read random bytes same size as the plaintext
    close(fd);
 
-   assert(strlen(secretKey) >= strlen(plaintext));   // sometimes the assertion fails        FIX THIS
+   assert(strlen(secretKey) >= strlen(plaintext));   // sometimes the assertion fails.. but why?        FIX THIS
 
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext = %s            size = %ld\n     ^\n", plaintext, strlen(plaintext));
@@ -209,41 +208,36 @@ void onetimepad_cipher(){
 void caesars_cipher(){
    uint8_t *plaintext;
    uint8_t *ciphertext;
-   ushort N = 76;
+   ushort N = 4;
    int c;
    long fileLength;
 
    printf("---------------------------------------\nCaesar's Cipher");
    printf("\n---------------------------------------\n\n\n");
 
-   /* Read input.txt character by character */
-   FILE *file = fopen("input.txt", "r");
+
+   FILE *file = fopen("input.txt", "r");    /* Read input.txt character by character */
    size_t i = 0;
-
    if(file == NULL) perror("Could not open file\n");
-
-   /* calculate the size of the file */
-   fseek(file, 0, SEEK_END);
+   fseek(file, 0, SEEK_END);    /* calculate the size of the file */
    fileLength = ftell(file);
    fseek(file, 0, SEEK_SET);
-
    plaintext = malloc(fileLength);
    ciphertext = malloc(fileLength);
 
    /* Read from input.txt and initialize the plaintext */
-   while ((c = fgetc(file)) != EOF)
-      plaintext[i++] = (char)c;
+   while ((c = fgetc(file)) != EOF){
+      if((c>='0' && c<='9') || (c>='A' && c<='Z') || (c>='a' && c<='z')) plaintext[i++] = (char)c;
+   }
    plaintext[i] = '\0';     
 
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext: %s\n\nN = %d\n\n", plaintext, N);
-
    ciphertext = caesar_encrypt(plaintext, N);
    printf("ciphertext: %s\n", ciphertext);
    printf("---------------------------------------\n");
 
    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
-   
    printf("ciphertext: %s\n\nN = %d\n\n", plaintext, N);
    caesar_decrypt(ciphertext, N); //call by reference - opote metatrepo to ciphertext se plaintext
    printf("plaintext: %s\n", ciphertext);
@@ -251,19 +245,40 @@ void caesars_cipher(){
 }
 
 void playfair_cipher(){
-   printf("---------------------------------------\nPlayfair Cipher");
-   printf("\n---------------------------------------\n\n\n");
    unsigned char *plaintext;
    unsigned char *ciphertext;
    unsigned char **key;
    unsigned char *second_key;
+   long fileLength;
+   int c;
 
-   printf("\nENCRYPT\n");
-   playfair_encrypt(plaintext, key);
+   FILE *file = fopen("input.txt", "r");    /* Read input.txt character by character */
+   size_t i = 0;
+   if(file == NULL) perror("Could not open file\n");
+   fseek(file, 0, SEEK_END);    /* calculate the size of the file */
+   fileLength = ftell(file);
+   fseek(file, 0, SEEK_SET);
+   plaintext = malloc(fileLength);
+   ciphertext = malloc(fileLength);
 
-   printf("\nDECRYPT\n");
-   playfair_decrypt(ciphertext, key);
-   playfair_keymatrix(second_key);
+   /* Read from input.txt and initialize the plaintext */
+   while ((c = fgetc(file)) != EOF){
+      if(c>='A' && c<='Z') plaintext[i++] = (char)c;
+   }
+   plaintext[i] = '\0';  
+
+   printf("---------------------------------------\nPlayfair Cipher");
+   printf("\n---------------------------------------\n\n\n");
+   printf("---------------------------------------\nENCRYPT:\n\n");
+   printf("plaintext: %s\n\n", plaintext);
+
+
+  // playfair_encrypt(plaintext, key);
+
+
+   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   //playfair_decrypt(ciphertext, key);
+   //playfair_keymatrix(second_key);
 }
 
 void affine_cipher(){
@@ -271,12 +286,35 @@ void affine_cipher(){
    printf("\n---------------------------------------\n\n\n");
    uint8_t *plaintext;
    uint8_t *ciphertext;
+   long fileLength;
+   int c;
 
-   printf("\nENCRYPT\n");
-   affine_encrypt(plaintext);
+   FILE *file = fopen("input.txt", "r");    /* Read input.txt character by character */
+   size_t i = 0;
+   if(file == NULL) perror("Could not open file\n");
+   fseek(file, 0, SEEK_END);    /* calculate the size of the file */
+   fileLength = ftell(file);
+   fseek(file, 0, SEEK_SET);
+   plaintext = malloc(fileLength);
+   ciphertext = malloc(fileLength);
 
-   printf("\nDECRYPT\n");
-   affine_decrypt(ciphertext);
+   /* Read from input.txt and initialize the plaintext */
+   while ((c = fgetc(file)) != EOF){
+      if(c>='A' && c<='Z'){
+         plaintext[i++] = (char)c;
+      }
+      if (c>='a' && c<='z') {
+         plaintext[i++] = toupper((char)c);
+      }
+   }
+   plaintext[i] = '\0';
+
+   printf("---------------------------------------\nENCRYPT:\n\n");
+   printf("plaintext: %s\n\n", plaintext);
+  // affine_encrypt(plaintext);
+
+   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   //affine_decrypt(ciphertext);
 }
 
 void feistel_cipher(){
@@ -289,7 +327,7 @@ void feistel_cipher(){
    uint8_t *key;
    feistel_round(block, key);
 
-   printf("\nENCRYPT\n");
+   printf("---------------------------------------\nENCRYPT:\n\n");
    feistel_encrypt(plaintext, keys);
 
    printf("\nDECRYPT\n");
@@ -302,13 +340,13 @@ void checkPlaintext(){
 
 int main(int argc, char *argv[]) {
 
-   onetimepad_cipher();
+   //onetimepad_cipher();
 
    //caesars_cipher();
 
    //playfair_cipher();
 
-   //affine_cipher(); 
+   affine_cipher(); 
 
    //feistel_cipher();
 
