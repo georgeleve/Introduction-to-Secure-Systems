@@ -1,5 +1,6 @@
 ---------------------------------------------------------------
 Georgios Gerasimos Leventopoulos csd4152
+
 Exercise 1 CS457 - Introduction to Security Systems
 ---------------------------------------------------------------
 
@@ -38,7 +39,6 @@ fiavazeis mexri na teleiosoun oi carakthres h mexri na gemisei to cipher
 feistel:
 isos na to allaxo se *keys[]
 8 kleidia(dhladh na ginoun 8 rounds)
-
 
 
 

@@ -16,7 +16,6 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
     return ciphertext;
 }
 void onetimepad_cipher(){
-    printf("---------------------------------------\nOne Time Pad Cipher\n---------------------------------------\n\n\n");
     long fileLength, secretKeySize;
     uint8_t *plaintext, *ciphertext, *temp;
     int c, fd, i = 0;
@@ -38,6 +37,8 @@ void onetimepad_cipher(){
     fd = open("/dev/urandom", O_RDONLY);
     read(fd, secretKey, strlen(plaintext)); // read random bytes (same size as the plaintext)
     close(fd);
+
+    printf("---------------------------------------\nOne Time Pad Cipher\n---------------------------------------\n\n\n");
 
     printf("---------------------------------------\nENCRYPT:\n\n");
     printf("plaintext = %s            size = %ld\n     ^\n", plaintext, strlen(plaintext));

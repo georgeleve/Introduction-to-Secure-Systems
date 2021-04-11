@@ -27,8 +27,6 @@ uint8_t *feistel_round(uint8_t *block, uint8_t *key){
    return result; // returns one output the same size as the data block
 }
 void feistel_cipher(){
-   printf("---------------------------------------\nFeistel Cipher");
-   printf("\n---------------------------------------\n\n\n");
    int i, fd, c;
    long fileLength;
    uint8_t *plaintext, *ciphertext, *block, *key;
@@ -53,6 +51,7 @@ void feistel_cipher(){
       plaintext[i++] = (char)c; // only read capital letters
    plaintext[i] = '\0';  
 
+   printf("---------------------------------------\nFeistel Cipher\n---------------------------------------\n\n\n");
 
    printf("---------------------------------------\nENCRYPT:\n\n");
    //feistel_encrypt(plaintext, keys);

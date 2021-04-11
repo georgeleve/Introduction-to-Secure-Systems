@@ -66,9 +66,6 @@ void caesars_cipher(){
    int c;
    long fileLength;
 
-   printf("---------------------------------------\nCaesar's Cipher");
-   printf("\n---------------------------------------\n\n\n");
-
    FILE *file = fopen("input.txt", "r");    /* Read input.txt character by character */
    size_t i = 0;
    if(file == NULL) perror("Could not open file\n");
@@ -82,6 +79,8 @@ void caesars_cipher(){
       if((c>='0' && c<='9') || (c>='A' && c<='Z') || (c>='a' && c<='z')) plaintext[i++] = (char)c;
    plaintext[i] = '\0';     
 
+   printf("---------------------------------------\nCaesar's Cipher\n---------------------------------------\n\n\n");
+   
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext: %s\n\nN = %d\n\n", plaintext, N);
    assert(N >= 0);

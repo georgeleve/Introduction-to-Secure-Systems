@@ -24,16 +24,12 @@ uint8_t *affine_decrypt(uint8_t *ciphertext){
         x = ch;
         if(x > 90) ch -= 26;
         ciphertext[i] = ch;
-        //printf("---%d---",x);
-        //printf("%c", ch);
+        /* printf("---%d---",x); printf("%c", ch); */
     }
     ciphertext[i] = '\0';
     return ciphertext;
 }
-
 void affine_cipher(){
-    printf("---------------------------------------\nAffine Cipher");
-    printf("\n---------------------------------------\n\n\n");
     uint8_t *plaintext;
     uint8_t *ciphertext;
     long fileLength;
@@ -53,9 +49,10 @@ void affine_cipher(){
     }
     plaintext[i] = '\0';
 
+    printf("---------------------------------------\nAffine Cipher\n---------------------------------------\n\n\n");
+    
     printf("---------------------------------------\nENCRYPT:\n\n");
     printf("plaintext: %s\n\n", plaintext);
-    
     ciphertext = affine_encrypt(plaintext);
     printf("ciphertext: %s\n", ciphertext);
     printf("---------------------------------------\n");
@@ -66,7 +63,6 @@ void affine_cipher(){
     printf("plaintext: %s\n", ciphertext); //call by reference - opote metatrepo to ciphertext se plaintext
     printf("---------------------------------------\n\n");
 }
-
 int main(int argc, char *argv[]) {
     affine_cipher();
     return 0;

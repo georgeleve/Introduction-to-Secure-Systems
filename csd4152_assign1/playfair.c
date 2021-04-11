@@ -38,12 +38,11 @@ void playfair_cipher(){
       if(c>='A' && c<='Z') plaintext[i++] = (char)c; // only read capital letters
    plaintext[i] = '\0';
 
-   printf("---------------------------------------\nPlayfair Cipher");
-   printf("\n---------------------------------------\n\n\n");
+   printf("---------------------------------------\nPlayfair Cipher\n---------------------------------------\n\n\n");
+
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext: %s\n\n", plaintext);
    printf("---------------------------------------\n\n\n");
-
   // playfair_encrypt(plaintext, key);
 
    printf("---------------------------------------\nDECRYPT:\n\n");
