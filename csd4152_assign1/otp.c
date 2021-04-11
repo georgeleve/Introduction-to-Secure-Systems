@@ -52,6 +52,7 @@ void onetimepad_cipher(){
     temp = malloc(fileLength);
     temp = otp_decrypt(ciphertext, secretKey);
     printf("plaintext = %s            size = %ld\n", temp, strlen(temp));
+    printf("---------------------------------------\n");
 }
 int main(int argc, char *argv[]) {
    onetimepad_cipher();

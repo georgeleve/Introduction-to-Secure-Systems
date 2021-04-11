@@ -1,17 +1,14 @@
 #include "cs457_crypto.h"
 
-int modInverse(int a, int m){
-    for (int x = 1; x < m; x++)
-        if (((a%m) * (x%m)) % m == 1) return x;
-}
+int modInverse(int a, int m){ int i; for(i = 1; i < m; i++) if(((a%m)*(i%m))%m==1) return i; }
 
 uint8_t *affine_encrypt(uint8_t *plaintext){
     char ch;
-    int i;
+    int i, x;
     for(i = 0; plaintext[i] != '\0'; ++i){
         ch = plaintext[i];
-        int x = ch-65;
-        ch = (((11*x)+19)%26+'A');  // f(x) = ax + b mod m
+        x = ch-65;
+        ch = ((11*x)+19)%26+'A';  /* f(x) = ax + b mod m */
         plaintext[i] = ch;
     }
     plaintext[i] = '\0';
@@ -19,17 +16,16 @@ uint8_t *affine_encrypt(uint8_t *plaintext){
 }
 uint8_t *affine_decrypt(uint8_t *ciphertext){
     char ch;
-    int i;
-    int x;
+    int i, x;
     for(i = 0; ciphertext[i] != '\0'; ++i){
         ch = ciphertext[i];
         x = ch - 'A';
-        ch = (modInverse(11, 26) * (x-19)) % 26 + 'A' + 26; // D(x) = a^-1 * (x - b) % m;
+        ch = (modInverse(11, 26) * (x-19)) % 26 + 'A' + 26; /* D(x) = a^-1 * (x - b) % m */
         x = ch;
         if(x > 90) ch -= 26;
+        ciphertext[i] = ch;
         //printf("---%d---",x);
         //printf("%c", ch);
-        ciphertext[i] = ch;
     }
     ciphertext[i] = '\0';
     return ciphertext;
@@ -51,10 +47,9 @@ void affine_cipher(){
     plaintext = malloc(fileLength);
     ciphertext = malloc(fileLength);
 
-    /* Read from input.txt and initialize the plaintext */
     while ((c = fgetc(file)) != EOF){
         if(c>='A' && c<='Z') plaintext[i++] = (char)c;
-        if (c>='a' && c<='z') plaintext[i++] = toupper((char)c); //lowercase to uppercase
+        if (c>='a' && c<='z') plaintext[i++] = toupper((char)c);
     }
     plaintext[i] = '\0';
 
@@ -69,7 +64,7 @@ void affine_cipher(){
     printf("ciphertext: %s\n\n", ciphertext);
     affine_decrypt(ciphertext);
     printf("plaintext: %s\n", ciphertext); //call by reference - opote metatrepo to ciphertext se plaintext
-    printf("---------------------------------------\n\n\n");
+    printf("---------------------------------------\n\n");
 }
 
 int main(int argc, char *argv[]) {

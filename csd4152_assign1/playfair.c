@@ -14,6 +14,7 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char** key){
 unsigned char **playfair_keymatrix(unsigned char *key){
    unsigned char **result;
 
+
    return result;
 }
 void playfair_cipher(){
@@ -33,23 +34,24 @@ void playfair_cipher(){
    plaintext = malloc(fileLength);
    ciphertext = malloc(fileLength);
 
-   /* Read from input.txt and initialize the plaintext */
    while ((c = fgetc(file)) != EOF)
       if(c>='A' && c<='Z') plaintext[i++] = (char)c; // only read capital letters
-   plaintext[i] = '\0';  
+   plaintext[i] = '\0';
 
    printf("---------------------------------------\nPlayfair Cipher");
    printf("\n---------------------------------------\n\n\n");
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext: %s\n\n", plaintext);
+   printf("---------------------------------------\n\n\n");
 
   // playfair_encrypt(plaintext, key);
 
-   printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   printf("---------------------------------------\nDECRYPT:\n\n");
    //playfair_decrypt(ciphertext, key);
    //playfair_keymatrix(second_key);
+   printf("---------------------------------------\n\n");
 }
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[]) {
     playfair_cipher();
     return 0;
 }

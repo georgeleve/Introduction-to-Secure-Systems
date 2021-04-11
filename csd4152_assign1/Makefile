@@ -1,23 +1,25 @@
 # Georgios Gerasimos Leventopoulos csd4152  
 # Assignment 1   hy457  Intro to Security Systems
 
-all:
-	gcc -o a.out cs457_crypto.c
-	./a.out
-
 otp:
-	gcc -o a.out cs457_crypto.c
+	gcc -o a.out otp.c
 	./a.out
 
 caesars:
-	gcc -o a.out cs457_crypto.c
+	gcc -o a.out caesars.c
 	./a.out
 
-#playfair:
+playfair:
+	gcc -o a.out playfair.c
+	./a.out
 
-#affine:
+affine:
+	gcc -o a.out affine.c
+	./a.out
 
-#feistel:
+feistel:
+	gcc -o a.out feistel.c
+	./a.out
 
 clean:
 	rm -rf *.o
