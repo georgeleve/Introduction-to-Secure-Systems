@@ -32,7 +32,7 @@ void feistel_cipher(){
    uint8_t *plaintext, *ciphertext, *block, *key;
    uint8_t keys[8];
 
-   i = 0; 
+   i = 0;
    uint8_t *secretKey = malloc(fileLength);
    fd = open("/dev/urandom", O_RDONLY);
    read(fd, secretKey, strlen(plaintext)); // read random bytes same size as the plaintext
@@ -47,7 +47,7 @@ void feistel_cipher(){
    ciphertext = malloc(fileLength);
 
    while ((c = fgetc(file)) != EOF)
-      plaintext[i++] = (char)c; // only read capital letters
+      plaintext[i++] = (char)c;  // only read capital letters
    plaintext[i] = '\0';  
 
    printf("---------------------------------------\nFeistel Cipher\n---------------------------------------\n\n\n");
