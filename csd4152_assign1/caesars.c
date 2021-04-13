@@ -95,6 +95,9 @@ void caesars_cipher(){
    caesar_decrypt(ciphertext, N); //call by reference - opote metatrepo to ciphertext se plaintext
    printf("plaintext: %s\n", ciphertext);
    printf("---------------------------------------\n\n");
+
+   //free(plaintext);
+   //free(ciphertext);
 }
 int main(int argc, char *argv[]) {
    caesars_cipher();

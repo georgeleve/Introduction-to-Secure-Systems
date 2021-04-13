@@ -54,6 +54,9 @@ void onetimepad_cipher(){
     temp = otp_decrypt(ciphertext, secretKey);
     printf("plaintext = %s            size = %ld\n", temp, strlen(temp));
     printf("---------------------------------------\n");
+
+    //free(plaintext);
+    //free(ciphertext);
 }
 int main(int argc, char *argv[]) {
    onetimepad_cipher();

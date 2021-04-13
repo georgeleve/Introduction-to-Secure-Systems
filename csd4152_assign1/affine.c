@@ -61,6 +61,9 @@ void affine_cipher(){
     affine_decrypt(ciphertext);
     printf("plaintext: %s\n", ciphertext); //call by reference - opote metatrepo to ciphertext se plaintext
     printf("---------------------------------------\n\n");
+
+    //free(plaintext);
+    //free(ciphertext);
 }
 int main(int argc, char *argv[]) {
     affine_cipher();

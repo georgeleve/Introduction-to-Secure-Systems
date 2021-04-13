@@ -63,6 +63,9 @@ void feistel_cipher(){
    //feistel_decrypt(ciphertext, keys);
    printf("\nplaintext: \n");
    printf("---------------------------------------\n\n");
+
+   //free(plaintext);
+   //free(ciphertext);
 }
 int main(int argc, char *argv[]) {
    feistel_cipher();

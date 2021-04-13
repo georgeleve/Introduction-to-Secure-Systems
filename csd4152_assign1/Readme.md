@@ -38,10 +38,10 @@ playfair:
 -an exo dyo idia grammata sinexomena tote na valo ena X sto 2o gramma     sto decode kano to napodo
 
 
-
 feistel:
 isos na to allaxo se *keys[]
 8 kleidia(dhladh na ginoun 8 rounds)
+
 
 
 
@@ -51,3 +51,5 @@ isos na to allaxo se *keys[]
 
 //uint8_t* is a pointer to an 8 bit integer in ram
 /* The ^ (bitwise XOR) in C or C++ takes two numbers as operands and does XOR on every bit of two numbers. The result of XOR is 1 if the two bits are different. */
+
+na kano malloc mesa stis encrypt kai stis decrypt
