@@ -24,14 +24,13 @@ uint8_t *feistel_round(uint8_t *block, uint8_t *key){
    uint8_t *result;
    //R[]; K[];
    //F = (R[i] * K[i])%(2^32);
-   return result; // returns one output the same size as the data block
+   return result; // returns one output the same size as the data block 
 }
 void feistel_cipher(){
    int i, fd, c;
    long fileLength;
    uint8_t *plaintext, *ciphertext, *block, *key;
    uint8_t keys[8];
-   feistel_round(block, key);
 
    i = 0; 
    uint8_t *secretKey = malloc(fileLength);
