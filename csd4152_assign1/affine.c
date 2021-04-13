@@ -5,32 +5,33 @@ int modInverse(int a, int m){ int i; for(i = 1; i < m; i++) if(((a%m)*(i%m))%m==
 uint8_t *affine_encrypt(uint8_t *plaintext){
     char ch;
     int i, x;
+    uint8_t *ciphertext = malloc(strlen(plaintext) * sizeof(int));
     for(i = 0; plaintext[i] != '\0'; ++i){
         ch = plaintext[i];
         x = ch-65;
         ch = ((11*x)+19)%26+'A';  /* f(x) = ax + b mod m */
-        plaintext[i] = ch;
+        ciphertext[i] = ch;
     }
-    plaintext[i] = '\0';
-    return plaintext;
+    ciphertext[i] = '\0';
+    return ciphertext;
 }
 uint8_t *affine_decrypt(uint8_t *ciphertext){
     char ch;
     int i, x;
+    uint8_t *plaintext2 = malloc(strlen(ciphertext) * sizeof(int));
     for(i = 0; ciphertext[i] != '\0'; ++i){
         ch = ciphertext[i];
         x = ch - 'A';
         ch = (modInverse(11, 26) * (x-19)) % 26 + 'A' + 26; /* D(x) = a^-1 * (x - b) % m */
         x = ch;
         if(x > 90) ch -= 26;
-        ciphertext[i] = ch; /* printf("---%d---",x); printf("%c", ch); */
+        plaintext2[i] = ch; /* printf("---%d---",x); printf("%c", ch); */
     }
-    ciphertext[i] = '\0';
-    return ciphertext;
+    plaintext2[i] = '\0';
+    return plaintext2; //return plaintext;
 }
 void affine_cipher(){
-    uint8_t *plaintext;
-    uint8_t *ciphertext;
+    uint8_t *plaintext, *ciphertext, *plaintext2;
     long fileLength;
     int c, i = 0;
 
@@ -40,7 +41,6 @@ void affine_cipher(){
     fileLength = ftell(file);
     fseek(file, 0, SEEK_SET);
     plaintext = malloc(fileLength);
-    ciphertext = malloc(fileLength);
 
     while ((c = fgetc(file)) != EOF){
         if(c>='A' && c<='Z') plaintext[i++] = (char)c;
@@ -58,12 +58,13 @@ void affine_cipher(){
     
     printf("\n\n---------------------------------------\nDECRYPT:\n\n");
     printf("ciphertext: %s\n\n", ciphertext);
-    affine_decrypt(ciphertext);
-    printf("plaintext: %s\n", ciphertext); //call by reference - opote metatrepo to ciphertext se plaintext
+    plaintext2 = affine_decrypt(ciphertext);
+    printf("plaintext: %s\n", plaintext2); //call by reference - opote metatrepo to ciphertext se plaintext
     printf("---------------------------------------\n\n");
 
-    //free(plaintext);
-    //free(ciphertext);
+    free(plaintext);
+    free(ciphertext);
+    free(plaintext2);
 }
 int main(int argc, char *argv[]) {
     affine_cipher();
