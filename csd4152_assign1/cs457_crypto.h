@@ -24,8 +24,8 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N);
 uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N);
 
 /* Playfair cipher */
-unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char **key);
-unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **key);
+unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char **keymatrix);
+unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keymatrix);
 unsigned char **playfair_keymatrix(unsigned char *key);
 
 /* Affine cipher */
@@ -33,6 +33,6 @@ uint8_t *affine_encrypt(uint8_t *plaintext);
 uint8_t *affine_decrypt(uint8_t *ciphertext);
 
 /* Feistel cipher */
-uint8_t *feistel_round(uint8_t *block, uint8_t *key);
+uint8_t *feistel_round(uint8_t *block, uint8_t *key); //may make it uint32_t
 uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]);
 uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]);
