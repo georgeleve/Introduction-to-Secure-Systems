@@ -1,7 +1,7 @@
 #include "cs457_crypto.h"
 
 int getI(char temp, unsigned char **keymatrix){
-   int i,j;
+   int i, j;
    for(i = 0; i < 5; i++){
       for(j = 0; j < 5; j++){
          if(keymatrix[i][j] == temp) return i;
@@ -9,7 +9,6 @@ int getI(char temp, unsigned char **keymatrix){
    }
    return -1;
 }
-
 int getJ(char temp, unsigned char **keymatrix){
    int i, j;
    for(i = 0; i < 5; i++){
@@ -19,13 +18,12 @@ int getJ(char temp, unsigned char **keymatrix){
    }
    return -1;
 }
-
 unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char **keymatrix){
    unsigned char *ciphertext;
    char temp1, temp2, temp1I, temp2I, temp1J, temp2J;
    int i,j;
 
-   ciphertext = malloc(strlen(plaintext) * sizeof(unsigned char)); //* sizeof(char)  ??
+   ciphertext = malloc(strlen(plaintext) * sizeof(unsigned char));
 
    for(i = 0; i < strlen(plaintext); i+=2){
       temp1 = plaintext[i];
@@ -55,7 +53,7 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
    unsigned char *plaintext;
    char temp1, temp2, temp1I, temp2I, temp1J, temp2J;
    int i,j;
-   plaintext = malloc(strlen(ciphertext) * sizeof(unsigned char)); // *sizeof(char))   ???
+   plaintext = malloc(strlen(ciphertext) * sizeof(unsigned char));
 
    for(i = 0; i < strlen(ciphertext); i+=2){
       temp1 = ciphertext[i];
@@ -83,7 +81,6 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
 
    return plaintext;
 }
-
 // na ftiaxo na mhn mporei na mpei to idio gramma polles fores
 unsigned char **playfair_keymatrix(unsigned char *keyword){
    int keywordSize = strlen(keyword);
@@ -92,9 +89,8 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
    unsigned char **keymatrix = (unsigned char**) malloc(5 * sizeof(unsigned char *));
    for (i=0; i<5; i++) keymatrix[i] = (unsigned char*)malloc(5 * sizeof(unsigned char));
    
-   printf("\n\nkeyword: "); for(i = 0; i < keywordSize; i++) printf("%c", keyword[i]); //PRINT KEYWORD
+   printf("\n\nkeyword: "); for(i = 0; i < keywordSize; i++) printf("%c", keyword[i]);
    
-   printf("\n\nplayfair keymatrix:\n   ");
    for(i = 0; i < 5; i++){
       for(int j = 0; j < 5; j++){
          if(temp < keywordSize){
@@ -126,7 +122,7 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
          }
       }
    }
-   return keymatrix;   //I NEED TO RETURN THIS correctly
+   return keymatrix;
 }
 int containsKey(char letter, unsigned char **keymatrix){
    for(int i = 0; i < 5; i++) {
@@ -136,7 +132,17 @@ int containsKey(char letter, unsigned char **keymatrix){
    }
    return 0;
 }
-
+void printKeymatrix(unsigned char **keymatrix){
+   int i, j;
+   printf("\n\nplayfair keymatrix:\n\n   ");
+   for(i = 0; i < 5; i++){
+      for(int j = 0; j < 5; j++){
+         printf("%c  ", keymatrix[i][j]);
+         if(j == 4) printf("\n   ");
+      }
+   }
+   printf("\n");
+}
 void playfair_cipher(){
    unsigned char *plaintext, *ciphertext, *keyword, *plaintext2;
    long fileLength;
@@ -145,10 +151,10 @@ void playfair_cipher(){
 
    FILE *file = fopen("input.txt", "r");
    if(file == NULL) perror("Could not open file\n");
-   fseek(file, 0, SEEK_END);    /* calculate the size of the file */
+   fseek(file, 0, SEEK_END);
    fileLength = ftell(file);
    fseek(file, 0, SEEK_SET);
-   plaintext = malloc(fileLength); // NOT SURE ABOUT THIS MALLOC
+   plaintext = malloc(fileLength);
    
    while ((c = fgetc(file)) != EOF) {
       if(c>='A' && c<='Z'){  // only read capital letters
@@ -156,7 +162,7 @@ void playfair_cipher(){
             temp = (char)c; 
             plaintext[i++] = (char)c;
          }else{
-            if(temp == (char)c)       // check if we have two repeated letters
+            if(temp == (char)c)  // check if we have two repeated letters
                plaintext[i++] = 'X';   
             else
                plaintext[i++] = (char)c;
@@ -170,37 +176,29 @@ void playfair_cipher(){
    plaintext[i] = '\0';
 
    keyword = "LIZARD\0";
-
    for(i = 0; i < 6; i++) if(keyword[i] == 'J') keyword[i] = 'I';    /* replace 'J' with 'I' */
 
    printf("---------------------------------------\nPlayfair Cipher");
    printf("\n---------------------------------------\n\n\n");
    printf("---------------------------------------\nENCRYPT:\n\n");
-   printf("plaintext: ");
-   for(i = 0; i < strlen(plaintext); i++) printf("%c", plaintext[i]); 
+   printf("plaintext: %s", plaintext);
 
    unsigned char **keymatrix = playfair_keymatrix(keyword);
-   for(i = 0; i < 5; i++){
-      for(int j = 0; j < 5; j++){
-         printf("%c  ", keymatrix[i][j]);
-         if(j == 4) printf("\n   ");
-      }
-   }
+   printKeymatrix(keymatrix);
 
    ciphertext = playfair_encrypt(plaintext, keymatrix);
-   printf("\n\nciphertext: %s\n", ciphertext);
+   printf("\nciphertext: %s\n", ciphertext);
    printf("---------------------------------------\n\n\n");
   
    printf("---------------------------------------\nDECRYPT:\n\n");
    printf("ciphertext: %s\n", ciphertext);
-   printf("\n\n");
-
+   printKeymatrix(keymatrix);
    plaintext2 = playfair_decrypt(ciphertext, keymatrix);
    printf("plaintext: %s \n", plaintext2);
    printf("---------------------------------------\n\n");
-   //free(plaintext);
-   //free(ciphertext);
-   //free(keyword);
+   free(plaintext);
+   free(ciphertext);
+   free(keymatrix);
 }
 int main(int argc, char *argv[]) {
     playfair_cipher();
