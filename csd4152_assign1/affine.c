@@ -23,8 +23,7 @@ uint8_t *affine_decrypt(uint8_t *ciphertext){
         ch = (modInverse(11, 26) * (x-19)) % 26 + 'A' + 26; /* D(x) = a^-1 * (x - b) % m */
         x = ch;
         if(x > 90) ch -= 26;
-        ciphertext[i] = ch;
-        /* printf("---%d---",x); printf("%c", ch); */
+        ciphertext[i] = ch; /* printf("---%d---",x); printf("%c", ch); */
     }
     ciphertext[i] = '\0';
     return ciphertext;

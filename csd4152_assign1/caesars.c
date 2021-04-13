@@ -1,28 +1,31 @@
 #include "cs457_crypto.h"
 
 uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
-   char ch;
+char ch;
    int i;
-   // 48-57  0-9   65-90  A-Z   97-122 a-z
+   ushort N2 = N % 10;
+   N = N % 26; /* N must be between 1-26 */ 
+   
 	for(i = 0; plaintext[i] != '\0'; ++i){
-		ch = plaintext[i];    
-      if(ch >= '0' && ch <= '9'){
-			if(ch+N>57 && ch+N<=90) ch = 65+N;
-         else if (ch+N <= 122) ch = 3;
+		ch = plaintext[i];
+
+		if(ch >= 'a' && ch <= 'z'){
+			ch = ch + N;
+			if(ch > 'z') ch = ch - 'z' + 'a' - 1;
 			plaintext[i] = ch;
 		}
-		else if(ch >= 'A' && ch <= 'Z'){
+      
+      if(ch >= '0' && ch <= '9'){
+			ch = ch + N2;
+			if(ch > '9') ch = ch - '9' + '0' - 1;
+			plaintext[i] = ch;
+		}
+
+		if(ch >= 'A' && ch <= 'Z'){
 			ch = ch + N;
 			if(ch > 'Z') ch = ch - 'Z' + 'A' - 1;
 			plaintext[i] = ch;
 		}
-		else if(ch >= 'a' && ch <= 'z'){
-			ch = ch + N;
-			//if(ch > 'z') ch = ch + ;
-			plaintext[i] = ch;
-		}else{
-         printf("Invalid character!\n");
-      }
 	}
    plaintext[i] = '\0';  
    return plaintext;
@@ -32,27 +35,26 @@ uint8_t *caesar_encrypt(uint8_t *plaintext, ushort N){
 uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
    char ch;
    int i;
+   ushort N2 = N % 10;
    N = N % 26; /* N must be between 1-26 */ 
    
    for(i = 0; ciphertext[i] != '\0'; ++i){
-        ch = ciphertext[i];
-      if(ch >= '0' && ch <= '9'){
+		ch = ciphertext[i];
+		if(ch >= 'a' && ch <= 'z'){
 			ch = ch - N;
-			if(ch < '0') ch = ch + '9' - '0' + 1;
-			ciphertext[i] = 53;
+			if(ch < 'a') ch = ch + 'z' - 'a' + 1;
+			ciphertext[i] = ch;
 		}
-      else if(ch >= 'A' && ch <= 'Z'){
+      if(ch >= '0' && ch <= '9'){
+			ch = ch - N2;
+			if(ch < '0') ch = ch + '9' - '0' + 1;
+			ciphertext[i] = ch;
+      }
+		if(ch >= 'A' && ch <= 'Z'){
 			ch = ch - N;
 			if(ch < 'A') ch = ch + 'Z' - 'A' + 1;
 			ciphertext[i] = ch;
 		}
-		else if(ch >= 'a' && ch <= 'z'){
-			ch = ch - N;
-			if(ch < 'a') ch = ch + 'z' - 'a' + 1;
-			ciphertext[i] = ch;
-		}else{
-         printf("Invalid character!\n");
-      }
 	}
    ciphertext[i] = '\0';  
    return ciphertext;

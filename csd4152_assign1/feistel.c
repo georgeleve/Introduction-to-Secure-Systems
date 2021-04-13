@@ -6,7 +6,7 @@ uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]){
    int S = 64; // block size of 64 bits
    int n_rounds = 8;
    for(i = 0; i < n_rounds; i++){
-      // kapou tha kalo thn round    round(block, keys[i]);
+      // kapou tha kalo thn round    feistel_round(block, keys[i]);
    } 
    return ciphertext;
 }
@@ -16,7 +16,7 @@ uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
    int S = 64;
    int n_rounds = 8;
    for(i = 0; i < n_rounds; i++){
-      // kapou tha kalo thn round    round(block, keys[i]);
+      // kapou tha kalo thn round    feistel_round(block, keys[i]);
    }
    return plaintext;
 }
@@ -54,11 +54,15 @@ void feistel_cipher(){
    printf("---------------------------------------\nFeistel Cipher\n---------------------------------------\n\n\n");
 
    printf("---------------------------------------\nENCRYPT:\n\n");
+   printf("plaintext: %s\n", plaintext);
    //feistel_encrypt(plaintext, keys);
+   printf("\nciphertext: \n");
    printf("---------------------------------------\n");
 
    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+   printf("ciphertext: \n");
    //feistel_decrypt(ciphertext, keys);
+   printf("\nplaintext: \n");
    printf("---------------------------------------\n\n");
 }
 int main(int argc, char *argv[]) {
