@@ -35,13 +35,13 @@ unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char **keymat
       temp1J = getJ(temp1, keymatrix);
       temp2J = getJ(temp2, keymatrix);
 
-      if(temp1I == temp2I){
+      if(temp1I == temp2I){ //same row
          ciphertext[i] = keymatrix[temp1I][(temp1J+1)%5];
          ciphertext[i+1] = keymatrix[temp2I][(temp2J+1)%5];
-      } else if(temp1J == temp2J){
+      } else if(temp1J == temp2J){ //same column
          ciphertext[i] = keymatrix[(temp1I+1)%5][temp1J];
          ciphertext[i+1] = keymatrix[(temp2I+1)%5][temp2J];
-      }else{
+      }else{ //same 3x3 grid
          ciphertext[i] = keymatrix[temp1I][temp2J];
          ciphertext[i+1] = keymatrix[temp2I][temp1J];
       }
@@ -52,7 +52,7 @@ unsigned char *playfair_encrypt(unsigned char *plaintext, unsigned char **keymat
 unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keymatrix){
    unsigned char *plaintext;
    char temp1, temp2, temp1I, temp2I, temp1J, temp2J;
-   int i,j;
+   int i, j;
    plaintext = malloc(strlen(ciphertext) * sizeof(unsigned char));
 
    for(i = 0; i < strlen(ciphertext); i+=2){
@@ -65,14 +65,13 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
       temp1J = getJ(temp1, keymatrix);
       temp2J = getJ(temp2, keymatrix);
 
-      if(temp1I == temp2I){
+      if(temp1I == temp2I){ //same row
          plaintext[i] = keymatrix[temp1I][(temp1J+5-1)%5];
-         printf("plaintext[i] = %c", plaintext[i]);
          plaintext[i+1] = keymatrix[temp2I][(temp2J+5-1)%5];
-      } else if(temp1J == temp2J){
+      } else if(temp1J == temp2J){ //same column
          plaintext[i] = keymatrix[(temp1I+5-1)%5][temp1J];
          plaintext[i+1] = keymatrix[(temp2I+5-1)%5][temp2J];
-      }else{
+      }else{ //same 3x3 grid
          plaintext[i] = keymatrix[temp1I][temp2J];
          plaintext[i+1] = keymatrix[temp2I][temp1J];
       }
@@ -81,12 +80,12 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
 
    return plaintext;
 }
-// na ftiaxo na mhn mporei na mpei to idio gramma polles fores
+// Na ftiaxo na mhn mporei na mpei to idio gramma polles fores
 unsigned char **playfair_keymatrix(unsigned char *keyword){
    int keywordSize = strlen(keyword);
-   int i, flag, j = 0, temp = 0, temp2 = 0;
-   int x, y;
-
+   int i, j, x, y, flag, temp = 0, temp2 = 0;
+   
+   // create 2D array (the key)
    unsigned char **keymatrix = (unsigned char**) malloc(5 * sizeof(unsigned char *));
    for (i=0; i<5; i++) keymatrix[i] = (unsigned char*)malloc(5 * sizeof(unsigned char));
    
@@ -147,6 +146,7 @@ void printKeymatrix(unsigned char **keymatrix){
 }
 void playfair_cipher(){
    unsigned char *plaintext, *ciphertext, *keyword, *plaintext2;
+   unsigned char **keymatrix;
    long fileLength;
    int c, j, i = 0;
    char temp;
@@ -180,14 +180,11 @@ void playfair_cipher(){
    keyword = "LIZARD\0";
    for(i = 0; i < 6; i++) if(keyword[i] == 'J') keyword[i] = 'I';    /* replace 'J' with 'I' */
 
-   printf("---------------------------------------\nPlayfair Cipher");
-   printf("\n---------------------------------------\n\n\n");
+   printf("---------------------------------------\nPlayfair Cipher\n---------------------------------------\n\n\n");
    printf("---------------------------------------\nENCRYPT:\n\n");
    printf("plaintext: %s", plaintext);
-
-   unsigned char **keymatrix = playfair_keymatrix(keyword);
+   keymatrix = playfair_keymatrix(keyword);
    printKeymatrix(keymatrix);
-
    ciphertext = playfair_encrypt(plaintext, keymatrix);
    printf("\nciphertext: %s\n", ciphertext);
    printf("---------------------------------------\n\n\n");
@@ -198,6 +195,7 @@ void playfair_cipher(){
    plaintext2 = playfair_decrypt(ciphertext, keymatrix);
    printf("plaintext: %s \n", plaintext2);
    printf("---------------------------------------\n\n");
+
    free(plaintext);
    free(ciphertext);
    free(keymatrix);

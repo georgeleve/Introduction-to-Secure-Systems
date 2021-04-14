@@ -18,8 +18,8 @@ uint8_t *otp_decrypt(uint8_t *ciphertext, uint8_t *key){
     return plaintext2;
 }
 void onetimepad_cipher(){
-    long fileLength, secretKeySize;
     uint8_t *plaintext, *ciphertext, *plaintext2;
+    long fileLength, secretKeySize;
     int c, fd, i = 0;
     
     FILE *file = fopen("input.txt", "r");
