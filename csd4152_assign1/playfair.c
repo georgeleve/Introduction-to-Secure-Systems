@@ -85,6 +85,7 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
 unsigned char **playfair_keymatrix(unsigned char *keyword){
    int keywordSize = strlen(keyword);
    int i, flag, j = 0, temp = 0, temp2 = 0;
+   int x, y;
 
    unsigned char **keymatrix = (unsigned char**) malloc(5 * sizeof(unsigned char *));
    for (i=0; i<5; i++) keymatrix[i] = (unsigned char*)malloc(5 * sizeof(unsigned char));
@@ -92,13 +93,13 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
    printf("\n\nkeyword: "); for(i = 0; i < keywordSize; i++) printf("%c", keyword[i]);
    
    for(i = 0; i < 5; i++){
-      for(int j = 0; j < 5; j++){
+      for(j = 0; j < 5; j++){
          if(temp < keywordSize){
             //put the keyword
             flag = 0;
-            for(int i = 0; i < 5; i++) {
-               for(int j = 0; j < 5; j++) { 
-      	         if(keymatrix[i][j] == keyword[temp]) flag = 1;
+            for(x = 0; x < 5; x++) {
+               for(y = 0; y < 5; y++) { 
+      	         if(keymatrix[x][y] == keyword[temp]) flag = 1;
                }
             }
             if(flag == 1) temp++;
@@ -108,9 +109,9 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
 
             //if contains the key then move to the next letter
             flag = 0;
-            for(int i = 0; i < 5; i++) {
-               for(int j = 0; j < 5; j++) {
-      	         if(keymatrix[i][j] == ((char) (temp2 + 'A'))) flag = 1;
+            for(x = 0; x < 5; x++) {
+               for(y = 0; y < 5; y++) {
+      	         if(keymatrix[x][y] == ((char) (temp2 + 'A'))) flag = 1;
                }
             }
 
@@ -125,8 +126,9 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
    return keymatrix;
 }
 int containsKey(char letter, unsigned char **keymatrix){
-   for(int i = 0; i < 5; i++) {
-      for(int j = 0; j < 5; j++) { 
+   int i, j;
+   for(i = 0; i < 5; i++) {
+      for(j = 0; j < 5; j++) { 
       	if(keymatrix[i][j] == letter) return 1;
       }
    }
@@ -136,7 +138,7 @@ void printKeymatrix(unsigned char **keymatrix){
    int i, j;
    printf("\n\nplayfair keymatrix:\n\n   ");
    for(i = 0; i < 5; i++){
-      for(int j = 0; j < 5; j++){
+      for(j = 0; j < 5; j++){
          printf("%c  ", keymatrix[i][j]);
          if(j == 4) printf("\n   ");
       }
