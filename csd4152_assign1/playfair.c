@@ -80,6 +80,16 @@ unsigned char *playfair_decrypt(unsigned char *ciphertext, unsigned char **keyma
 
    return plaintext;
 }
+int containsKey(char letter, unsigned char **keymatrix){
+   int i, j;
+   for(i = 0; i < 5; i++) {
+      for(j = 0; j < 5; j++) { 
+      	if(keymatrix[i][j] == letter) return 1;
+      }
+   }
+   return 0;
+}
+
 // Na ftiaxo na mhn mporei na mpei to idio gramma polles fores
 unsigned char **playfair_keymatrix(unsigned char *keyword){
    int keywordSize = strlen(keyword);
@@ -93,45 +103,26 @@ unsigned char **playfair_keymatrix(unsigned char *keyword){
    
    for(i = 0; i < 5; i++){
       for(j = 0; j < 5; j++){
-         if(temp < keywordSize){
-            //put the keyword
-            flag = 0;
-            for(x = 0; x < 5; x++) {
-               for(y = 0; y < 5; y++) { 
-      	         if(keymatrix[x][y] == keyword[temp]) flag = 1;
-               }
+         int found = 0;
+         while(temp<keywordSize){
+            if(keyword[temp]<'A' || keyword[temp]>'Z' || containsKey(keyword[temp],keymatrix)){
+               temp++;
+            }else{
+               found = 1;
+               keymatrix[i][j] = keyword[temp++];
+               break;
             }
-            if(flag == 1) temp++;
-            keymatrix[i][j] = keyword[temp++];
-         }else{
-            //put the rest of the alphabet
-
-            //if contains the key then move to the next letter
-            flag = 0;
-            for(x = 0; x < 5; x++) {
-               for(y = 0; y < 5; y++) {
-      	         if(keymatrix[x][y] == ((char) (temp2 + 'A'))) flag = 1;
-               }
+         }
+         if(found == 1) continue;
+         for(char c = 'A'; c<='Z'; c++){
+            if(!containsKey(c,keymatrix)){
+               keymatrix[i][j] = c;
+               break;
             }
-
-            if(flag == 1) temp2++; // skip the letters that are already in
-
-            if((temp2+'A') == 'J') temp2++; // skip letter J
-            keymatrix[i][j] = (char) (temp2 + 'A');
-            temp2++; // move to the next letter of the alphabet
          }
       }
    }
    return keymatrix;
-}
-int containsKey(char letter, unsigned char **keymatrix){
-   int i, j;
-   for(i = 0; i < 5; i++) {
-      for(j = 0; j < 5; j++) { 
-      	if(keymatrix[i][j] == letter) return 1;
-      }
-   }
-   return 0;
 }
 void printKeymatrix(unsigned char **keymatrix){
    int i, j;
@@ -177,7 +168,7 @@ void playfair_cipher(){
    }
    plaintext[i] = '\0';
 
-   keyword = "LIZARD\0";
+   keyword = "HELLO WORLD";
    for(i = 0; i < 6; i++) if(keyword[i] == 'J') keyword[i] = 'I';    /* replace 'J' with 'I' */
 
    printf("---------------------------------------\nPlayfair Cipher\n---------------------------------------\n\n\n");

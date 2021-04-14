@@ -33,6 +33,6 @@ uint8_t *affine_encrypt(uint8_t *plaintext);
 uint8_t *affine_decrypt(uint8_t *ciphertext);
 
 /* Feistel cipher */
-uint32_t *feistel_round(uint32_t *block, uint32_t *key); //may make it uint32_t
-uint64_t *feistel_encrypt(uint32_t *plaintext, uint32_t keys[]); //may make it uint64
-uint64_t *feistel_decrypt(uint32_t *ciphertext, uint32_t keys[]);
+uint32_t* feistel_round(uint32_t* block, uint32_t key); //may make it uint32_t
+uint32_t* feistel_encrypt(uint32_t *plaintext, uint32_t keys[]); //may make it uint64
+uint32_t* feistel_decrypt(uint32_t *ciphertext, uint32_t keys[]);

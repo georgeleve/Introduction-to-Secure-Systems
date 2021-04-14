@@ -1,58 +1,64 @@
 #include "cs457_crypto.h"
 
-uint8_t *feistel_encrypt(uint8_t *plaintext, uint8_t keys[]){
-   uint8_t *ciphertext = malloc(strlen(plaintext) * sizeof(int)); 
+uint32_t* feistel_encrypt(uint32_t* plaintext, uint32_t keys[]){
    int R, L, i, n_rounds = 8, S = 64; // block size of 64 bits
+
+   uint32_t* result = plaintext;
    for(i = 0; i < n_rounds; i++){
-      // kapou tha kalo thn round    feistel_round(block, keys[i]);
-   } 
-   return ciphertext;
-}
-uint8_t *feistel_decrypt(uint8_t *ciphertext, uint8_t keys[]){
-   uint8_t *plaintext2 = malloc(strlen(ciphertext) * sizeof(int)); 
-   int R, L, i, S = 64, n_rounds = 8;
-   for(i = 0; i < n_rounds; i++){
-      // kapou tha kalo thn round    feistel_round(block, keys[i]);
+      result = feistel_round(result, keys[i]);
    }
-   return plaintext2;
+   uint32_t tmp = result[0];
+   result[0] = result[1];
+   result[1] = tmp;
+   return result;
 }
-uint8_t *feistel_round(uint8_t *block, uint8_t *key){
-   uint8_t *result;
-   //R[]; K[]; //F = (R[i] * K[i])%(2^32);
-   return result; // returns one output the same size as the data block 
+
+uint32_t* feistel_decrypt(uint32_t *ciphertext, uint32_t keys[]){
+   int R, L, i, n_rounds = 8, S = 64; // block size of 64 bits
+   uint32_t* result = ciphertext;
+   for(i = n_rounds-1; i >=0; i--){ 
+      result = feistel_round(result, keys[i]);
+   }
+   uint32_t tmp = result[0];
+   result[0] = result[1];
+   result[1] = tmp;
+   return result;
+}
+uint32_t* feistel_round(uint32_t* block, uint32_t key){
+   // block[0] = LEFT, block[1] = RIGHT
+   uint32_t* result = malloc(sizeof(uint32_t)*2);
+   result[0] = block[1];
+   uint32_t hash = (block[1]*(uint64_t)key) % (((uint64_t)1)<<32);
+   result[1] = hash^block[0];
+   return result;
 }
 void feistel_cipher(){
-   int fd, c, i =0;
-   long fileLength;
-   uint8_t *plaintext, *ciphertext, *block, *key, keys[8];
 
-   uint8_t *secretKey = malloc(fileLength);
-   fd = open("/dev/urandom", O_RDONLY);
-   read(fd, secretKey, strlen(plaintext)); // read random bytes same size as the plaintext
-   close(fd);
+   uint32_t keys[] = {6,44,65,4321,12312,67,5454,344};
 
-   FILE *file = fopen("input.txt", "r");    /* Read input.txt character by character */
-   if(file == NULL) perror("Could not open file\n");
-   fseek(file, 0, SEEK_END);    /* calculate the size of the file */
-   fileLength = ftell(file);
-   fseek(file, 0, SEEK_SET);
-   plaintext = malloc(fileLength);
-
-   while ((c = fgetc(file)) != EOF)
-      plaintext[i++] = (char)c;  // only read capital letters
-   plaintext[i] = '\0';
-
-   printf("---------------------------------------\nFeistel Cipher\n---------------------------------------\n\n\n");
+   uint64_t block = 134133;
+   printf("---------------------------------------\nPlayfair Cipher\n---------------------------------------\n\n\n");
    printf("---------------------------------------\nENCRYPT:\n\n");
-   printf("plaintext: %s\n", plaintext);
-   //feistel_encrypt(plaintext, keys);
-   printf("\nciphertext: \n");
+
+   printf("plaintext: %llu\n\n", (long long unsigned) block);
+
+   uint32_t* blockSplit = malloc(sizeof(uint32_t)*2);
+   blockSplit[0] = block>>32;
+   blockSplit[1] = block%(((uint64_t)1)<<32);
+
+   uint32_t* enc = feistel_encrypt(blockSplit, keys);
+   block = (((uint64_t)enc[0])<<32) + enc[1];
+   printf("ciphertext: %llu\n", (long long unsigned) block);
+   blockSplit[0] = block>>32;
+   blockSplit[1] = block%(((uint64_t)1)<<32);
+   
    printf("---------------------------------------\n");
 
    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
-   printf("ciphertext: \n");
-   //feistel_decrypt(ciphertext, keys);
-   printf("\nplaintext: \n");
+   printf("ciphertext: %llu\n\n", (long long unsigned) block);
+   uint32_t* dec = feistel_decrypt(blockSplit, keys);
+   block = (((uint64_t)dec[0])<<32) + dec[1];
+   printf("plaintext: %llu\n", (long long unsigned) block);  
    printf("---------------------------------------\n\n");
 
    //free(plaintext);
