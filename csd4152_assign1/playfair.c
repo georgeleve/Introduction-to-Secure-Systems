@@ -89,8 +89,6 @@ int containsKey(char letter, unsigned char **keymatrix){
    }
    return 0;
 }
-
-// Na ftiaxo na mhn mporei na mpei to idio gramma polles fores
 unsigned char **playfair_keymatrix(unsigned char *keyword){
    int keywordSize = strlen(keyword);
    int i, j, x, y, flag, temp = 0, temp2 = 0;

@@ -2,11 +2,8 @@
 
 uint32_t* feistel_encrypt(uint32_t* plaintext, uint32_t keys[]){
    int R, L, i, n_rounds = 8, S = 64; // block size of 64 bits
-
    uint32_t* result = plaintext;
-   for(i = 0; i < n_rounds; i++){
-      result = feistel_round(result, keys[i]);
-   }
+   for(i = 0; i < n_rounds; i++) result = feistel_round(result, keys[i]);
    uint32_t tmp = result[0];
    result[0] = result[1];
    result[1] = tmp;
@@ -16,9 +13,7 @@ uint32_t* feistel_encrypt(uint32_t* plaintext, uint32_t keys[]){
 uint32_t* feistel_decrypt(uint32_t *ciphertext, uint32_t keys[]){
    int R, L, i, n_rounds = 8, S = 64; // block size of 64 bits
    uint32_t* result = ciphertext;
-   for(i = n_rounds-1; i >=0; i--){ 
-      result = feistel_round(result, keys[i]);
-   }
+   for(i = n_rounds-1; i >=0; i--) result = feistel_round(result, keys[i]);
    uint32_t tmp = result[0];
    result[0] = result[1];
    result[1] = tmp;
@@ -33,9 +28,7 @@ uint32_t* feistel_round(uint32_t* block, uint32_t key){
    return result;
 }
 void feistel_cipher(){
-
    uint32_t keys[] = {6,44,65,4321,12312,67,5454,344};
-
    uint64_t block = 134133;
    printf("---------------------------------------\nPlayfair Cipher\n---------------------------------------\n\n\n");
    printf("---------------------------------------\nENCRYPT:\n\n");
@@ -53,7 +46,6 @@ void feistel_cipher(){
    blockSplit[1] = block%(((uint64_t)1)<<32);
    
    printf("---------------------------------------\n");
-
    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
    printf("ciphertext: %llu\n\n", (long long unsigned) block);
    uint32_t* dec = feistel_decrypt(blockSplit, keys);
@@ -61,9 +53,9 @@ void feistel_cipher(){
    printf("plaintext: %llu\n", (long long unsigned) block);  
    printf("---------------------------------------\n\n");
 
-   //free(plaintext);
-   //free(ciphertext);
-   //free(plaintext2);
+   free(plaintext);
+   free(ciphertext);
+   free(plaintext2);
 }
 int main(int argc, char *argv[]) {
    feistel_cipher();

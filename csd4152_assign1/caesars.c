@@ -38,22 +38,19 @@ uint8_t *caesar_decrypt(uint8_t *ciphertext, ushort N){
          if(map[j] == ch) break;
          j++;
       }
-      //printf("plaintextchar = %c    and   mapcharacter = %c\n", ch, map[j]);
       if((j-N)<0){
          ch = map[(62+j-N)%62];
-         printf("&");
       }else{
          ch = map[(j-N)];
       }
       plaintext2[i] = ch;
-      //printf("%c", ch);
 	}
    plaintext2[i] = '\0';  
    return plaintext2;
 }
 void caesars_cipher(){
    uint8_t *plaintext, *ciphertext, *plaintext2;
-   ushort N = 996;
+   ushort N = 5;
    long fileLength;
    int c;
 
