@@ -53,9 +53,7 @@ void feistel_cipher(){
    printf("plaintext: %llu\n", (long long unsigned) block);  
    printf("---------------------------------------\n\n");
 
-   free(plaintext);
-   free(ciphertext);
-   free(plaintext2);
+   free(blockSplit);
 }
 int main(int argc, char *argv[]) {
    feistel_cipher();
