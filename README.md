@@ -18,7 +18,9 @@ Each of these commands will use a different algorithm to encrypt the message.
 
 You can see the output in the images below (input="HELLO WORLD")
 
-One Time Pad
+- One Time Pad
+
+
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/otp.jpg)
 
 Caesars Cipher
