@@ -16,7 +16,7 @@ Available commands the user can type:
 
 Each of these commands will use a different algorithm to encrypt the message.
 
-You can see the output in the images below (input="HELLO WORLD")
+You can see the output in the images below (input="HELLOWORLD")
 
 
 - One Time Pad
