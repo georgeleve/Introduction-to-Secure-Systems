@@ -3,6 +3,7 @@ Encryption Algorithms implemented in C (Caesars Cipher, Affine Cipher, Feistel C
 
 How to use it:
 - clone the project
+- cd exercise_1
 - make a file "input.txt" and write the message that you want to encrypt
 - type "make" and then the the name of the algorithm that you want to use  (e.g.: "make playfair")
 
