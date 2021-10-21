@@ -19,19 +19,18 @@ Each of these commands will use a different algorithm to encrypt the message.
 You can see the output in the images below (input="HELLO WORLD")
 
 - One Time Pad
-
-
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/otp.jpg)
 
-Caesars Cipher
+- Caesars Cipher
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/caesars.jpg)
-Playfair Cipher
+
+- Playfair Cipher
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/playfair.jpg)
 
-Affine Cipher
+- Affine Cipher
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/affine.jpg)
 
-Feistel Cipher
+- Feistel Cipher
 ![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/feistel.jpg)
 
 
