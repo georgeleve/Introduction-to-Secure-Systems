@@ -39,22 +39,22 @@ void onetimepad_cipher(){
     read(fd, secretKey, strlen(plaintext)); // read random bytes (same size as the plaintext)
     close(fd);
 
-    printf("---------------------------------------\nOne Time Pad Cipher\n---------------------------------------\n\n\n");
+    printf("-----------------------------------------------------------------------\nOne Time Pad Cipher\n-----------------------------------------------------------------------\n\n\n");
 
-    printf("---------------------------------------\nENCRYPT:\n\n");
+    printf("-----------------------------------------------------------------------\nENCRYPT:\n\n");
     printf("plaintext = %s            size = %ld\n     ^\n", plaintext, strlen(plaintext));
-    printf("secret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("    size = %ld\n      =\n", secretKeySize);
+    printf("secret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("  size = %ld\n      =\n", secretKeySize);
     ciphertext = otp_encrypt(plaintext, secretKey);
     printf("ciphertext = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", ciphertext[i]);
-    printf("\n---------------------------------------\n");
+    printf("\n-----------------------------------------------------------------------\n");
 
-    printf("\n\n---------------------------------------\nDECRYPT:\n\n");
+    printf("\n\n-----------------------------------------------------------------------\nDECRYPT:\n\n");
     printf("ciphertext = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", ciphertext[i]);
-    printf("\n       ^\nsecret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("    size = %ld\n      =\n", secretKeySize);
+    printf("\n       ^\nsecret key = "); for(i = 0; i < secretKeySize; ++i) printf("%02X ", secretKey[i]); printf("  size = %ld\n      =\n", secretKeySize);
 
     plaintext2 = otp_decrypt(ciphertext, secretKey);
     printf("plaintext = %s            size = %ld\n", plaintext2, strlen(plaintext2));
-    printf("---------------------------------------\n");
+    printf("-----------------------------------------------------------------------\n");
 
     free(plaintext);
     free(ciphertext);
