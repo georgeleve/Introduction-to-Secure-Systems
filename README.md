@@ -6,11 +6,11 @@ How to use it:
 - make a file "input.txt" and write the message that you want to encrypt
 - type "make" and then the the name of the algorithm that you want to use  (e.g.: "make playfair")
 
-Avalable commands the user can type:
-make otp
-make caesars
-make playfair
-make affine
-make feistel
+Available commands the user can type:
+-make otp
+-make caesars
+-make playfair
+-make affine
+-make feistel
 
 Each of these commands will use a different algorithm to encrypt the message.
