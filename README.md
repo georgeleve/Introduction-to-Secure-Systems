@@ -1,4 +1,4 @@
-Encryption Algorithms implemented in C (Caesars Cipher, Affine Cipher, Feistel Cipher, Playfair Cipher)
+Encryption Algorithms implemented in C (One Time Pad, Caesars Cipher, Playfair Cipher, Affine Cipher, Feistel Cipher)
 
 
 How to use it:
