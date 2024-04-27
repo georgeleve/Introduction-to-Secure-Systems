@@ -22,34 +22,17 @@ Each of these commands will use a different algorithm to encrypt the message.
 
 You can see the output in the images below (input="HELLOWORLD")
 
+- One Time Pad  
+![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/images/otp.jpg)  
 
-- One Time Pad
+- Caesars Cipher  
+![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/images/caesars.jpg)  
 
+- Playfair Cipher  
+![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/images/playfair.jpg)  
 
-![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/otp.jpg)
+- Affine Cipher  
+![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/images/affine.jpg)  
 
-
-- Caesars Cipher
-
-
-![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/caesars.jpg)
-
-
-- Playfair Cipher
-
-
-![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/playfair.jpg)
-
-
-- Affine Cipher
-
-
-![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/affine.jpg)
-
-
-- Feistel Cipher
-
-
-![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/feistel.jpg)
-
-
+- Feistel Cipher  
+![alt text](https://github.com/georgeleve/CS457-Introduction-to-Security-Systems/blob/main/images/feistel.jpg)  
