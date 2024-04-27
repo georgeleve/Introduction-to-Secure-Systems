@@ -1,6 +1,6 @@
 Exercise 2:  
 - Part 1: System call tracker in C. Tracked the number of system calls in a C program.
-- Part 2: Modified an old version of the linux kernel to add a new functionality (used QEMU)  
+- Part 2: Modified an old version of the Linux kernel to add a new functionality (used QEMU)  
 
 
 Exercise 1 - Encryption Algorithms implemented in C (One Time Pad, Caesars Cipher, Playfair Cipher, Affine Cipher, Feistel Cipher):
@@ -9,7 +9,7 @@ How to use it:
 - clone the project
 - cd exercise_1
 - make a file "input.txt" and write the message that you want to encrypt
-- type "make" and then the the name of the algorithm that you want to use  (e.g.: "make playfair")
+- type "make" and then the name of the algorithm that you want to use  (e.g.: "make playfair")
 
 Available commands the user can type:
 - make otp
