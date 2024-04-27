@@ -1,4 +1,4 @@
-# [Introduction-to-Secure-Systems](https://www.csd.uoc.gr/~hy457/index.html)  
+# [Introduction-to-Secure-Systems](https://www.csd.uoc.gr/CSD/index.jsp?content=courses_catalog&openmenu=demoAcc3&lang=en&course=98)  
 
 Exercise 2:  
 - Part 1: System call tracker in C. Tracked the number of system calls in a C program.
