@@ -1,5 +1,9 @@
-Encryption Algorithms implemented in C (One Time Pad, Caesars Cipher, Playfair Cipher, Affine Cipher, Feistel Cipher)
+Exercise 2:  
+- Part 1: System call tracker in C. Tracked the number of system calls in a C program.
+- Part 2: Modified an old version of the linux kernel to add a new functionality (used QEMU)  
 
+
+Exercise 1 - Encryption Algorithms implemented in C (One Time Pad, Caesars Cipher, Playfair Cipher, Affine Cipher, Feistel Cipher):
 
 How to use it:
 - clone the project
